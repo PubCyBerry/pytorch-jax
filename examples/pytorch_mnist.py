@@ -95,6 +95,13 @@ def main():
     parser.add_argument("--dry-run", action="store_true", default=False, help="quickly check a single pass")
     parser.add_argument("--seed", type=int, default=1, metavar="S", help="random seed (default: 1)")
     parser.add_argument(
+        "--num-workers",
+        type=int,
+        default=6,
+        metavar="N",
+        help="how many subprocesses to use for data loading. 0 means that the data will be loaded in the main process.(default: 6)",
+    )
+    parser.add_argument(
         "--log-interval",
         type=int,
         default=10,
@@ -118,7 +125,7 @@ def main():
     train_kwargs = {"batch_size": args.batch_size}
     test_kwargs = {"batch_size": args.test_batch_size}
     if use_cuda:
-        cuda_kwargs = {"num_workers": 6, "pin_memory": True, "shuffle": True}
+        cuda_kwargs = {"num_workers": args.num_workers, "pin_memory": True, "shuffle": True}
         train_kwargs.update(cuda_kwargs)
         test_kwargs.update(cuda_kwargs)
 
