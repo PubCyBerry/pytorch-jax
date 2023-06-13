@@ -15,8 +15,7 @@ COPY ../requirements.txt /project/
 EXPOSE 80
 
 # Install dependencies
-RUN \
-    apt-get update &&\
+RUN apt-get update &&\
     apt-get install -y --no-install-recommends \
         ca-certificates \
         ccache \
@@ -47,8 +46,7 @@ RUN \
 
 
 # Install ZSH(Z Shell)
-RUN \
-    chsh -s /bin/zsh &&\
+RUN chsh -s /bin/zsh &&\
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&\
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions &&\
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting &&\
@@ -67,22 +65,30 @@ RUN curl -o /tmp/miniconda.sh -sSL http://repo.continuum.io/miniconda/Miniconda3
     rm /tmp/miniconda.sh
 RUN conda update -y conda
 
+# Create Virtual Environment
+ARG PYTHON_VERSION="3.10"
+ARG CONDA_ENV_NAME="main"
+
+RUN conda create -n $CONDA_ENV_NAME python=$PYTHON_VERSION
+ENV PATH /usr/local/envs/$CONDA_ENV_NAME/bin:$PATH
+RUN echo "source activate ${CONDA_ENV_NAME}" >> ~/.zshrc
+
 # Setup SSH configuration
 RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
     echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
     echo "UsePAM no" >> /etc/ssh/sshd_config
 
 # Install requirements
-RUN pip install -r requirements.txt
-# NOTE: Recent pip(> 20.3) has backtracking runtime issue
-# (See https://pip.pypa.io/en/stable/topics/dependency-resolution/#possible-ways-to-reduce-backtracking)
-# RUN \
-#     pip install -U pip==20.3 &&\
-#     pip install --use-deprecated=legacy-resolver -r requirements.txt
+RUN source activate ${CONDA_ENV_NAME} &&\
+    pip install -r requirements.txt
+
+# Set git config
+RUN git config --global init.defaultBranch "main" &&\
+    git config --global core.editor "vim"
+
 
 # Cleanup Cache files
-RUN \
-    apt-get clean &&\
+RUN apt-get clean &&\
     apt-get autoclean &&\
     apt-get autoremove -y &&\
     rm -rf /var/lib/cache/* &&\
