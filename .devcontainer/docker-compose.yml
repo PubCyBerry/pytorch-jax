@@ -1,0 +1,24 @@
+version: '3.7' # docker-compose version number 
+
+services:
+  main:
+    container_name: neuralop
+    build:
+      # build image from dockerfile
+      context: .. # Set current working directory
+      dockerfile: .devcontainer/Dockerfile
+    image: pytorch-base:cuda12.1-cudnn8.9 # image name + tag
+    ipc: host # --ipc host, use shared memory
+    ports:
+      - "9090:80" # host port 9090 -> container port 80
+    volumes:
+      # mount directory
+      - ..:/project
+    tty: true # -it
+    deploy: # --gpus all
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [ gpu ]
+    command: sleep infinity

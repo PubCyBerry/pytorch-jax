@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "pytorch-jax",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "main",
+	"workspaceFolder": "/project",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"donjayamanne.python-extension-pack",
+				"ms-toolsai.jupyter",
+				"donjayamanne.git-extension-pack",
+				"mhutchie.git-graph",
+				"ms-python.black-formatter",
+				"redhat.vscode-yaml",
+				"foxundermoon.shell-format",
+				"albert.TabOut",
+				"mechatroner.rainbow-csv",
+				"DavidAnson.vscode-markdownlint",
+				"DavidAnson.vscode-markdownlint",
+				"shd101wyy.markdown-preview-enhanced",
+				"yzane.markdown-pdf",
+				"yzhang.markdown-all-in-one",
+				"oderwat.indent-rainbow",
+				"waderyan.gitblame",
+				"felipecaputo.git-project-manager",
+				"ericliu.coldcode",
+				"streetsidesoftware.code-spell-checker",
+				"bungcip.better-toml",
+				"chouzz.vscode-better-align"
+			]
+		}
+	}
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "devcontainer"
+}
