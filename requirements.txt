@@ -1,4 +1,4 @@
-# ----------- PRML ---------- #
+# ----------- PyTorch ---------- #
 torchinfo >= 1.7.2
 lightning>=1.9.1
 DeepXDE>=1.8.4
@@ -15,12 +15,14 @@ hydra-optuna-sweeper>=1.2.0
 # --------- loggers --------- #
 wandb >= 0.15.4
 # neptune >= 1.2.0
+# neptune-client
 mlflow >= 2.4.1
 comet-ml >= 3.33.4
 tensorboard >= 2.13.0
 
 # ---------  others --------- #
 matplotlib          # plotting figures
+# visdom            # plotting figures(made in facebook)
 pyrootutils         # standardizing the project root setup
 pre-commit          # hooks for applying linters on commit
 rich                # beautiful text formatting in terminal
@@ -32,3 +34,6 @@ jupyter
 notebook
 ipykernel
 ipywidgets
+
+# ----- version control ------#
+dvc >= 3.0.0

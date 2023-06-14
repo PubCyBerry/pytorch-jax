@@ -35,7 +35,8 @@
 				"ericliu.coldcode",
 				"streetsidesoftware.code-spell-checker",
 				"bungcip.better-toml",
-				"chouzz.vscode-better-align"
+				"chouzz.vscode-better-align",
+				"Iterative.dvc"
 			]
 		}
 	}
