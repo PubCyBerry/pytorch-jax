@@ -39,9 +39,9 @@ dependencies:
       - hydra-optuna-sweeper >= 1.2.0
       # ------ loggers -------- #
       - wandb >= 0.15.4
-      - mlflow >= 2.4.1
+      # - mlflow >= 2.4.1
       # - neptune-client
-      - comet-ml >= 3.33.4
+      # - comet-ml >= 3.33.4
       - tensorboard >= 2.13.0
       # --------- JAX --------- #
       - --find-links https://storage.googleapis.com/jax-releases/jax_cuda_releases.html

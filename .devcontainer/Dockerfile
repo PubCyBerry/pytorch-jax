@@ -56,6 +56,7 @@ RUN apt-get update &&\
         # libxrender-dev \
         # pkg-config \
         # software-properties-common \
+        openssh-server \
         ssh \
         sudo \
         tmux \
