@@ -1,5 +1,12 @@
 # Specify image
-FROM nvcr.io/nvidia/pytorch:23.05-py3
+FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
+
+# Define user arguments
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+ARG USER_GROUP=user
+ARG PASSWD=ubuntu
 
 # Ensure apt is in non-interactive to avoid prompts
 ENV DEBIAN_FRONTEND=noninteractive
@@ -7,21 +14,31 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Seoul
 
 # Set working directory
-WORKDIR /project
-# Copy requirements
+ENV PROJECT_ROOT=/project
+WORKDIR ${PROJECT_ROOT}
+# Copy requirements.txt / environments.yaml
 COPY ../requirements.txt /project/
+COPY ../environments.yaml /project/
 
-# Expose port 80
-EXPOSE 80
+# Expose ports
+# -- default ports --
+# ssh : 22
+# HTTP : 80
+# mysql : 3306
+# ...
+# (See: https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
+EXPOSE 22 80 2224 3306
 
 # Install dependencies
-RUN \
-    apt-get update &&\
+RUN apt-get update &&\
     apt-get install -y --no-install-recommends \
+        apt-utils \
+        build-essential \
         ca-certificates \
         ccache \
         cmake \
         curl \
+        dialog \
         fonts-powerline \
         git \
         imagemagick \
@@ -43,12 +60,13 @@ RUN \
         unzip \
         vim \
         wget \
-        zsh
+        zsh &&\
+    apt-get autoremove -y &&\
+    apt-get clean -y
 
 
 # Install ZSH(Z Shell)
-RUN \
-    chsh -s /bin/zsh &&\
+RUN chsh -s /bin/zsh &&\
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&\
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions &&\
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting &&\
@@ -58,6 +76,10 @@ RUN \
 # Prevent TimeZone mismatch error
 RUN update-locale
 
+# Setup SSH configuration
+RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
+    echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
+    echo "UsePAM no" >> /etc/ssh/sshd_config
 
 # Install Miniconda with Root perimission
 ENV LANG C.UTF-8
@@ -67,23 +89,36 @@ RUN curl -o /tmp/miniconda.sh -sSL http://repo.continuum.io/miniconda/Miniconda3
     rm /tmp/miniconda.sh
 RUN conda update -y conda
 
-# Setup SSH configuration
-RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
-    echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
-    echo "UsePAM no" >> /etc/ssh/sshd_config
+# Create Virtual Environment
+ARG CONDA_ENV_NAME="main"
 
-# Install requirements
-RUN pip install -r requirements.txt
-# NOTE: Recent pip(> 20.3) has backtracking runtime issue
-# (See https://pip.pypa.io/en/stable/topics/dependency-resolution/#possible-ways-to-reduce-backtracking)
-# RUN \
-#     pip install -U pip==20.3 &&\
-#     pip install --use-deprecated=legacy-resolver -r requirements.txt
+# Install environments.yaml
+RUN conda env create -f environments.yaml
+ENV PATH /usr/local/envs/$CONDA_ENV_NAME/bin:$PATH
+RUN echo "source activate ${CONDA_ENV_NAME}" >> ~/.zshrc
+
+# Set git config
+RUN git config --global init.defaultBranch "main" &&\
+    git config --global core.editor "vim" &&\
+    git config --global --add safe.directory ${PROJECT_ROOT}
+
+# Reset apt to be interactive
+ENV DEBIAN_FRONTEND=dialog
+
+# # Create user with password-free `sudo` permissions.
+# RUN groupadd -f -g ${USER_GID} ${USER_GROUP} && \
+#     useradd --shell $(which zsh) --create-home -u ${USER_UID} -g ${USER_GROUP} \
+#         -p $(openssl passwd -1 ${PASSWD}) ${USERNAME} && \
+#     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# # Set default user
+# USER $USERNAME
 
 # Cleanup Cache files
-RUN \
-    apt-get clean &&\
+RUN apt-get clean &&\
     apt-get autoclean &&\
     apt-get autoremove -y &&\
     rm -rf /var/lib/cache/* &&\
     rm -rf /var/lib/log/*
+
+CMD [ "/bin/zsh" ]

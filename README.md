@@ -1,8 +1,18 @@
 # PyTorch + JAX Implementations
 
+- [PyTorch + JAX Implementations](#pytorch--jax-implementations)
+  - [References](#references)
+    - [Frameworks](#frameworks)
+    - [NVIDIA CUDA toolkit](#nvidia-cuda-toolkit)
+    - [Version Control](#version-control)
+    - [Container](#container)
+    - [Terminal](#terminal)
+
 ## References
 
 ### Frameworks
+
+______________________________________________________________________
 
 - [PyTorch](https://pytorch.org/)
 
@@ -16,7 +26,7 @@
 
 ### NVIDIA CUDA toolkit
 
----
+______________________________________________________________________
 
 - [NVIDIA Graphic Driver](https://www.nvidia.com/download/index.aspx)
 
@@ -30,7 +40,7 @@
 
 ### Version Control
 
----
+______________________________________________________________________
 
 - [Git](https://git-scm.com/)
 
@@ -44,7 +54,7 @@
 
 ### Container
 
----
+______________________________________________________________________
 
 - [PyTorch - NGC Catalog - NVIDIA](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch)
 
@@ -59,3 +69,15 @@
 - [cresset](https://github.com/cresset-template/cresset)
 
 - [List of TCP and UDP port numbers](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
+
+### Terminal
+
+______________________________________________________________________
+
+- [zsh](https://www.zsh.org/)
+
+- [oh-my-zsh](https://ohmyz.sh/)
+
+- [tmux](https://github.com/tmux/tmux)
+
+- [oh-my-tmux](https://github.com/gpakosz/.tmux)
