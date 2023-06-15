@@ -68,6 +68,16 @@ RUN apt-get update &&\
     apt-get autoremove -y &&\
     apt-get clean -y
 
+# Setup tmux
+RUN git clone https://github.com/gpakosz/.tmux.git ~/.tmux &&\
+    ln -s -f ~/.tmux/.tmux.conf &&\
+    cp ~/.tmux/.tmux.conf.local ~/.tmux.conf.local &&\
+    echo "set-option -g default-shell /bin/zsh" > ~/.tmux.conf.local
+
+# Setup fzf
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&\
+    ~/.fzf/install --all
+
 
 # Install ZSH(Z Shell)
 RUN chsh -s /bin/zsh &&\
@@ -75,7 +85,7 @@ RUN chsh -s /bin/zsh &&\
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions &&\
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting &&\
     perl -pi -w -e 's/ZSH_THEME=.*/ZSH_THEME="agnoster"/g;' ~/.zshrc &&\
-    perl -pi -w -e 's/plugins=.*/plugins=(git tmux ssh-agent zsh-autosuggestions zsh-syntax-highlighting)/g;' ~/.zshrc
+    perl -pi -w -e 's/plugins=.*/plugins=(git tmux fzf ssh-agent zsh-autosuggestions zsh-syntax-highlighting)/g;' ~/.zshrc
 
 # Prevent TimeZone mismatch error
 RUN update-locale
