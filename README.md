@@ -1,12 +1,11 @@
-# PyTorch + JAX Implementations
+# PyTorch + JAX Implementations <!-- omit from toc -->
 
-- [PyTorch + JAX Implementations](#pytorch--jax-implementations)
-  - [References](#references)
-    - [Frameworks](#frameworks)
-    - [NVIDIA CUDA toolkit](#nvidia-cuda-toolkit)
-    - [Version Control](#version-control)
-    - [Container](#container)
-    - [Terminal](#terminal)
+- [References](#references)
+  - [Frameworks](#frameworks)
+  - [NVIDIA CUDA toolkit](#nvidia-cuda-toolkit)
+  - [Version Control](#version-control)
+  - [Container](#container)
+  - [Terminal](#terminal)
 
 ## References
 
@@ -18,11 +17,13 @@ ______________________________________________________________________
 
 - [JAX](https://jax.readthedocs.io/en/latest/)
 
-- [DeepXDE](https://deepxde.readthedocs.io/en/latest/#)
-
 - [Lightning](https://lightning.ai/)
 
 - [Hydra](https://hydra.cc/)
+
+- [WandB](https://wandb.ai/site)
+
+- [TensorBoard](https://www.tensorflow.org/tensorboard?hl=ko)
 
 ### NVIDIA CUDA toolkit
 
@@ -56,6 +57,8 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
+- [Docker](https://www.docker.com/)
+
 - [PyTorch - NGC Catalog - NVIDIA](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch)
 
 - [vscode-devcontainer-tutorial](https://github.com/0916dhkim/vscode-devcontainer-tutorial)
@@ -81,3 +84,5 @@ ______________________________________________________________________
 - [tmux](https://github.com/tmux/tmux)
 
 - [oh-my-tmux](https://github.com/gpakosz/.tmux)
+
+- [fzf](https://github.com/junegunn/fzf)
