@@ -46,7 +46,6 @@ RUN apt-get update &&\
         git \
         imagemagick \
         language-pack-en \
-        # libfreetype6-dev \
         # libhdf5-serial-dev \
         # libzmq3-dev \
         # libjpeg-dev \
@@ -72,12 +71,11 @@ RUN apt-get update &&\
 RUN git clone https://github.com/gpakosz/.tmux.git ~/.tmux &&\
     ln -s -f ~/.tmux/.tmux.conf &&\
     cp ~/.tmux/.tmux.conf.local ~/.tmux.conf.local &&\
-    echo "set-option -g default-shell /bin/zsh" > ~/.tmux.conf.local
+    echo "set-option -g default-shell /bin/zsh" >~/.tmux.conf.local
 
 # Setup fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf &&\
     ~/.fzf/install --all
-
 
 # Install ZSH(Z Shell)
 RUN chsh -s /bin/zsh &&\
@@ -91,12 +89,12 @@ RUN chsh -s /bin/zsh &&\
 RUN update-locale
 
 # Setup SSH configuration
-RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
-    echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config && \
-    echo "UsePAM no" >> /etc/ssh/sshd_config
+RUN echo "PasswordAuthentication yes" >>/etc/ssh/sshd_config &&\
+    echo "PermitEmptyPasswords yes" >>/etc/ssh/sshd_config &&\
+    echo "UsePAM no" >>/etc/ssh/sshd_config
 
+# Install requirements
 RUN pip install -r requirements.txt
-
 
 # Set git config
 RUN git config --global init.defaultBranch "main" &&\
@@ -115,11 +113,12 @@ ENV DEBIAN_FRONTEND=dialog
 # # Set default user
 # USER $USERNAME
 
-# Cleanup Cache files
+# Cleanup Cache files, non-existing symbolic link
 RUN apt-get clean &&\
     apt-get autoclean &&\
     apt-get autoremove -y &&\
     rm -rf /var/lib/cache/* &&\
-    rm -rf /var/lib/log/*
+    rm -rf /var/lib/log/* &&\
+    rm -f /usr/local/{libtbbmalloc_proxy.so.2,libtbbbind_2_0.so.3,libtbb.so.12,libtbbmalloc.so.2,libtbbbind_2_5.so.3,libtbbbind.so.3}
 
 CMD [ "/bin/zsh" ]

@@ -9,7 +9,7 @@ services:
       # build image from dockerfile
       context: .. # Set current working directory
       dockerfile: .devcontainer/Dockerfile
-    image: pytorch-jax:jax0.4.12-torch2.0.0-cuda12.1-cudnn8.9 # image name + tag
+    image: pytorch-jax:jax0.4.11-torch2.0.0-cuda12.1-cudnn8.9 # image name + tag
     ipc: host # --ipc host, use shared memory
     ports:
       - "9090:22" 
