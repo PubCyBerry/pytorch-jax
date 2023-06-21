@@ -1,25 +1,23 @@
 # Type Hinting
-from typing import Tuple, Callable, Union
+# Misc.
+from dataclasses import dataclass
+from typing import Callable, Tuple, Union
+
+# PyTorch
+import torch
 from numpy.typing import ArrayLike
 
 # Computing
 from scipy.integrate import odeint, solve_ivp
 
-# PyTorch
-import torch
-
-# Misc.
-from dataclasses import dataclass
-
 # user-defined libs.
-from src.problems import ode
-from src.problems import pde
+from src.problems import ode, pde
 
 
 @dataclass
 class ODESolver:
-    """
-    ODESolver class provides a simple interface for solving ordinary differential equations (ODEs).
+    """ODESolver class provides a simple interface for solving ordinary differential equations
+    (ODEs).
 
     Args:
         equation (Union[str, Callable]): The name of the equation representing the ODE or a callable representing the ODE.
@@ -37,7 +35,6 @@ class ODESolver:
 
     Methods:
         solve_ivp: Solves the ODE using the selected solver.
-
     """
 
     equation: Union[str, Callable]
@@ -47,8 +44,7 @@ class ODESolver:
 
     @property
     def ts(self) -> torch.Tensor:
-        """
-        Generate a tensor of t values.
+        """Generate a tensor of t values.
 
         Returns:
             torch.Tensor: Tensor containing t values.
@@ -60,8 +56,7 @@ class ODESolver:
         initial_condition: ArrayLike,
         use_odeint: bool = False,
     ) -> ArrayLike:
-        """
-        Solve the ODE using the selected solver.
+        """Solve the ODE using the selected solver.
 
         Args:
             initial_condition (Union[ArrayLike, Callable]): The initial condition of the ODE.
@@ -75,7 +70,6 @@ class ODESolver:
 
         Raises:
             TypeError: If the initial condition is not callable or an ArrayLike object.
-
         """
         if isinstance(self.equation, str):
             func = getattr(ode, self.equation)
@@ -86,7 +80,12 @@ class ODESolver:
             solution = odeint(func, initial_condition, self.ts, args=self.params, tfirst=True).T
         else:
             solution = solve_ivp(
-                func, self.trange, initial_condition, args=self.params, method="LSODA", t_eval=self.ts
+                func,
+                self.trange,
+                initial_condition,
+                args=self.params,
+                method="LSODA",
+                t_eval=self.ts,
             ).y
 
         return torch.Tensor(solution)
@@ -94,8 +93,8 @@ class ODESolver:
 
 @dataclass
 class PDESolver:
-    """
-    ODESolver class provides a simple interface for solving ordinary differential equations (ODEs).
+    """ODESolver class provides a simple interface for solving ordinary differential equations
+    (ODEs).
 
     Args:
         equation (Union[str, Callable]): The name of the equation representing the ODE or a callable representing the ODE.
@@ -113,7 +112,6 @@ class PDESolver:
 
     Methods:
         solve_ivp: Solves the ODE using the selected solver.
-
     """
 
     equation: Union[str, Callable]
@@ -125,8 +123,7 @@ class PDESolver:
 
     @property
     def xs(self) -> torch.Tensor:
-        """
-        Generate a tensor of x values.
+        """Generate a tensor of x values.
 
         Returns:
             torch.Tensor: Tensor containing x values.
@@ -135,8 +132,7 @@ class PDESolver:
 
     @property
     def ts(self) -> torch.Tensor:
-        """
-        Generate a tensor of t values.
+        """Generate a tensor of t values.
 
         Returns:
             torch.Tensor: Tensor containing t values.
@@ -148,8 +144,7 @@ class PDESolver:
         initial_condition: Union[ArrayLike, Callable],
         use_odeint: bool = False,
     ) -> ArrayLike:
-        """
-        Solve the ODE using the selected solver.
+        """Solve the ODE using the selected solver.
 
         Args:
             initial_condition (Union[ArrayLike, Callable]): The initial condition of the ODE.
@@ -163,7 +158,6 @@ class PDESolver:
 
         Raises:
             TypeError: If the initial condition is not callable or an ArrayLike object.
-
         """
         if isinstance(initial_condition, Callable):
             initial_condition = initial_condition(self.xs)
@@ -175,6 +169,13 @@ class PDESolver:
         if use_odeint:
             solution = odeint(func, initial_condition, self.ts, args=self.params, tfirst=True).T
         else:
-            solution = solve_ivp( func, self.trange, initial_condition, args=self.params, method="LSODA", t_eval=self.ts).y
+            solution = solve_ivp(
+                func,
+                self.trange,
+                initial_condition,
+                args=self.params,
+                method="LSODA",
+                t_eval=self.ts,
+            ).y
 
         return torch.Tensor(solution)

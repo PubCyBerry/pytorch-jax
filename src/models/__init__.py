@@ -1,1 +1,1 @@
-from src.models.models import MLP, MLP_concat, DeepONet, FNO1D
+from src.models.models import FNO1D, MLP, DeepONet, MLP_concat

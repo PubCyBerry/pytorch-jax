@@ -1,27 +1,24 @@
-from __future__ import print_function
-from typing import Tuple
-
 # argument parser
 import argparse
-
-# JAX
-import jax
-import jax.numpy as jnp
-from jax import jit, grad, vmap, lax
-from jax.example_libraries import stax
-from jax.example_libraries import optimizers
-
-# PyTorch
-import torch
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from torchvision import datasets, transforms
 
 # Misc.
 import os
 import pickle
 import random
+from typing import Tuple
+
+# JAX
+import jax
+import jax.numpy as jnp
 import numpy as np
+
+# PyTorch
+import torch
+import torch.nn.functional as F
+from jax import grad, jit, lax, vmap
+from jax.example_libraries import optimizers, stax
+from torch.utils.data import DataLoader, Dataset
+from torchvision import datasets, transforms
 
 # Disable GPU Preallocation for safe multiprocessing
 os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
@@ -88,7 +85,10 @@ def test(params, acc_fn, loss_fn, test_loader):
     test_loss /= len(test_loader.dataset)
     print(
         "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
-            test_loss, correct, len(test_loader.dataset), 100.0 * correct / len(test_loader.dataset)
+            test_loss,
+            correct,
+            len(test_loader.dataset),
+            100.0 * correct / len(test_loader.dataset),
         )
     )
 
@@ -98,16 +98,42 @@ def main():
     parser = argparse.ArgumentParser(description="JAX MNIST Example")
     parser.add_argument("--key", type=int, default=0, metavar="N", help="main key for JAX PRNG")
     parser.add_argument(
-        "--batch-size", type=int, default=64, metavar="N", help="input batch size for training (default: 64)"
+        "--batch-size",
+        type=int,
+        default=64,
+        metavar="N",
+        help="input batch size for training (default: 64)",
     )
     parser.add_argument(
-        "--test-batch-size", type=int, default=1000, metavar="N", help="input batch size for testing (default: 1000)"
+        "--test-batch-size",
+        type=int,
+        default=1000,
+        metavar="N",
+        help="input batch size for testing (default: 1000)",
     )
-    parser.add_argument("--epochs", type=int, default=5, metavar="N", help="number of epochs to train (default: 14)")
-    parser.add_argument("--lr", type=float, default=0.001, metavar="LR", help="learning rate (default: 0.001)")
-    parser.add_argument("--gamma", type=float, default=0.7, metavar="M", help="Learning rate step gamma (default: 0.7)")
-    parser.add_argument("--dry-run", action="store_true", default=False, help="quickly check a single pass")
-    parser.add_argument("--seed", type=int, default=1, metavar="S", help="random seed (default: 1)")
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=5,
+        metavar="N",
+        help="number of epochs to train (default: 14)",
+    )
+    parser.add_argument(
+        "--lr", type=float, default=0.001, metavar="LR", help="learning rate (default: 0.001)"
+    )
+    parser.add_argument(
+        "--gamma",
+        type=float,
+        default=0.7,
+        metavar="M",
+        help="Learning rate step gamma (default: 0.7)",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", default=False, help="quickly check a single pass"
+    )
+    parser.add_argument(
+        "--seed", type=int, default=1, metavar="S", help="random seed (default: 1)"
+    )
     parser.add_argument(
         "--num-workers",
         type=int,
@@ -122,7 +148,9 @@ def main():
         metavar="N",
         help="how many batches to wait before logging training status",
     )
-    parser.add_argument("--save-model", action="store_true", default=False, help="For Saving the current Model")
+    parser.add_argument(
+        "--save-model", action="store_true", default=False, help="For Saving the current Model"
+    )
     args = parser.parse_args()
 
     # Fix randomness
@@ -149,12 +177,22 @@ def main():
     }
 
     # See https://discuss.pytorch.org/t/normalization-in-the-mnist-example/457/20
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
-    target_transform = transforms.Compose([lambda x: torch.tensor(x), lambda x: F.one_hot(x, num_classes=10)])
-    dataset1 = datasets.MNIST(
-        "../data", train=True, download=True, transform=transform, target_transform=target_transform
+    transform = transforms.Compose(
+        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
     )
-    dataset2 = datasets.MNIST("../data", train=False, transform=transform, target_transform=target_transform)
+    target_transform = transforms.Compose(
+        [lambda x: torch.tensor(x), lambda x: F.one_hot(x, num_classes=10)]
+    )
+    dataset1 = datasets.MNIST(
+        "../data",
+        train=True,
+        download=True,
+        transform=transform,
+        target_transform=target_transform,
+    )
+    dataset2 = datasets.MNIST(
+        "../data", train=False, transform=transform, target_transform=target_transform
+    )
     train_loader = DataLoader(dataset1, **train_kwargs)
     test_loader = DataLoader(dataset2, **test_kwargs)
 

@@ -37,7 +37,9 @@ class SpectralConv1d(nn.Module):
 
         # Multiply relevant Fourier modes
         # out_ft: (batch, out_channel, 0.5*resolution + 1)
-        out_ft = torch.zeros(batchsize, self.out_channels, x.size(-1) // 2 + 1, device=x.device, dtype=torch.cfloat)
+        out_ft = torch.zeros(
+            batchsize, self.out_channels, x.size(-1) // 2 + 1, device=x.device, dtype=torch.cfloat
+        )
         out_ft[:, :, : self.modes1] = self.compl_mul1d(x_ft[:, :, : self.modes1], self.weights1)
 
         # Return to physical space
@@ -63,9 +65,13 @@ class FNO1D_block(nn.Module):
 class Fourier_Feature(nn.Module):
     # Fourier Features Let Networks Learn High Frequency Functions in Low Dimensional Domains
     # https://arxiv.org/abs/2006.10739
-    def __init__(self, input_size: int = 2, mapping_size: int = 64, scale: float = 10, *args, **kwargs) -> None:
+    def __init__(
+        self, input_size: int = 2, mapping_size: int = 64, scale: float = 10, *args, **kwargs
+    ) -> None:
         super().__init__()
-        self.B = nn.Parameter(scale * torch.randn(mapping_size//2, input_size), requires_grad=False)
+        self.B = nn.Parameter(
+            scale * torch.randn(mapping_size // 2, input_size), requires_grad=False
+        )
 
     def forward(self, x):
         x_proj = (2 * torch.pi * x) @ self.B.to(x).T

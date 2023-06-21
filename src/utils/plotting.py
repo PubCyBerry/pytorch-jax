@@ -1,15 +1,15 @@
 from pathlib import Path
 from typing import Any, Tuple, Union
 
-import torch
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from PIL import Image
+import torch
+from IPython.display import clear_output, display
 from matplotlib import animation, gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from PIL import Image
 
 from src.utils.utils import is_notebook
-from IPython.display import display, clear_output
 
 # Set maximum buffer size for animation
 mpl.rcParams["animation.embed_limit"] = 2**128
@@ -26,7 +26,9 @@ class Artist:
         dirname.mkdir(parents=True, exist_ok=True)
         self.figure.save(fp=(dirname / filename).with_suffix(".png"), format="PNG")
 
-    def save_gif_from_files(self, filename: Union[Path, str], dirname: Union[Path, str] = ".", fps=20):
+    def save_gif_from_files(
+        self, filename: Union[Path, str], dirname: Union[Path, str] = ".", fps=20
+    ):
         files = Path(dirname).glob("**/*.png")
         self.imgs = [Image.open(file) for file in sorted(files)]
         self.save_gif(filename, dirname, fps)
@@ -56,9 +58,17 @@ class Artist:
             self.figure.show()
 
     def plot_ode(
-        self, ts, solution, prediction=None, title="Trajectory of Damped Harmonic Oscillator", *args: Any, **kwds: Any
+        self,
+        ts,
+        solution,
+        prediction=None,
+        title="Trajectory of Damped Harmonic Oscillator",
+        *args: Any,
+        **kwds: Any,
     ):
-        fig, ax = plt.subplots(figsize=kwds.get("figsize", None))  # Create a figure and axis objects
+        fig, ax = plt.subplots(
+            figsize=kwds.get("figsize", None)
+        )  # Create a figure and axis objects
         ax.plot(ts, solution, "b", label="q(t)")  # Plot the solution
         if prediction is not None:  # if prediction is given, plot it
             ax.plot(ts, prediction, "r", linestyle="dashed", label="prediction")
@@ -89,7 +99,9 @@ class Artist:
         *args: Any,
         **kwds: Any,
     ):
-        fig, ax = plt.subplots(figsize=kwds.get("figsize", None))  # Create a figure and axis objects
+        fig, ax = plt.subplots(
+            figsize=kwds.get("figsize", None)
+        )  # Create a figure and axis objects
 
         # Additional margin for title
         extra_top_margin: float = 0.08
@@ -206,8 +218,7 @@ class Artist:
         self.figure = self.figure_to_image()
 
     def figure_to_image(self) -> Image:
-        """
-        Converts the current figure in matplotlib to an RGB image.
+        """Converts the current figure in matplotlib to an RGB image.
 
         Returns:
             img (Image): The converted image.

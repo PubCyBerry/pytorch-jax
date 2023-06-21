@@ -1,9 +1,10 @@
 from typing import List
+
 from numpy.typing import ArrayLike
 
+
 def sho(t: float, X: ArrayLike, zeta: float, omega0: float) -> List[float]:
-    """
-    Solves the Ordinary Differential Equation (ODE) for a free harmonic oscillator.
+    """Solves the Ordinary Differential Equation (ODE) for a free harmonic oscillator.
 
     Args:
         t (float): The independent variable (time).

@@ -1,11 +1,12 @@
 import os
-import numpy as np
-import torch
 import random
 
+import numpy as np
+import torch
+
+
 def seed_everything(seed: float = 41) -> None:
-    """
-    Set the random seed for various libraries to ensure reproducibility.
+    """Set the random seed for various libraries to ensure reproducibility.
 
     Args:
         seed (float): The seed value to set. Defaults to 41.
@@ -20,6 +21,7 @@ def seed_everything(seed: float = 41) -> None:
     torch.cuda.manual_seed_all(seed)  # if use multi-GPU
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+
 
 def is_notebook():
     try:

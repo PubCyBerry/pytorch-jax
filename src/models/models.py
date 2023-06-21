@@ -1,12 +1,12 @@
-from typing import Any, List
 from collections import OrderedDict
+from typing import Any, List
 
 import numpy as np
 import torch
 import torch.nn as nn
 
-from src.models.model_utils import get_activation
 from src.models.model_layers import FNO1D_block, Fourier_Feature
+from src.models.model_utils import get_activation
 
 
 class BaseNN(nn.Module):
@@ -147,7 +147,9 @@ class FNO1D(BaseNN):
 
         self.modes1: int = modes
         self.width: int = width
-        self.fc0 = nn.Linear(num_step + n_dimension, self.width)  # input channel is : (a(x,t[ti ~ to]), x)
+        self.fc0 = nn.Linear(
+            num_step + n_dimension, self.width
+        )  # input channel is : (a(x,t[ti ~ to]), x)
 
         modules = list()
         for i in range(num_blocks):

@@ -18,11 +18,12 @@ def burgers(t: float, u: ArrayLike, period: float, nu: float):
 
     return u_t
 
+
 # Define pseudo-spectral solver
 # PDE -> FFT -> ODE
 def kdv(t: float, u: ArrayLike, period: float, coefficient: float):
-    """
-    solve Korteweg de Vries equation with spectral method
+    r"""Solve Korteweg de Vries equation with spectral method.
+
     u_t + u * u_x + \delta^2 * u_xxx = 0
     u: u(x, t_i), shape: (num_x)
     period: assumed period of sequence

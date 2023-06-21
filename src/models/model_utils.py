@@ -1,5 +1,6 @@
 import torch.nn as nn
 
+
 def get_activation(name: str = "lrelu") -> nn.Module:
     # choose activation function
     activations = nn.ModuleDict(
