@@ -1,6 +1,8 @@
 # ----------- PyTorch ---------- #
-# torch==2.0.0
-torchvision==0.15.1
+--index-url https://download.pytorch.org/whl/cu118
+torch==2.0.1
+torchaudio==2.0.2
+torchvision==0.15.2
 torchinfo==1.8.0
 lightning==2.0.3
 # DeepXDE>=1.8.4
