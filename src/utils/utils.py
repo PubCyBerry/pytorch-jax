@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import random
 
-def set_seed(seed: float = 41) -> None:
+def seed_everything(seed: float = 41) -> None:
     """
     Set the random seed for various libraries to ensure reproducibility.
 

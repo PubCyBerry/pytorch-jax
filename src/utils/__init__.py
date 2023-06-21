@@ -1,1 +1,1 @@
-from src.utils.utils import set_seed
+from src.utils.utils import seed_everything
