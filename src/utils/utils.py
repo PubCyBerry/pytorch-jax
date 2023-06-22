@@ -23,10 +23,18 @@ def seed_everything(seed: float = 41) -> None:
     torch.backends.cudnn.benchmark = False
 
 
-def is_notebook():
+def is_notebook() -> bool:
     try:
+        # Windows
         from IPython import get_ipython
 
+        shell = get_ipython().__class__.__name__
+        if shell == "ZMQInteractiveShell":
+            return True  # Jupyter notebook or qtconsole
+        elif shell == "TerminalInteractiveShell":
+            return False  # Terminal running IPython
+
+        # Linux
         if "IPKernelApp" not in get_ipython().config:  # pragma: no cover
             raise ImportError("console")
             return False
