@@ -1,6 +1,6 @@
 import numpy as np
-from scipy import fftpack
 from numpy.typing import ArrayLike
+from scipy import fftpack
 
 
 def fft_diff(x: ArrayLike, order: int = 1, period: float = 2 * np.pi):
