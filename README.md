@@ -1,4 +1,4 @@
-# PyTorch + JAX Implementations <!-- omit from toc -->
+# Frequency Response <!-- omit from toc -->
 
 - [References](#references)
   - [Frameworks](#frameworks)
