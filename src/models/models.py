@@ -62,22 +62,13 @@ class MLP(BaseNN):
         self.net = nn.Sequential(OrderedDict(modules))
         self.apply(self._init_weights(init_type))
 
-    def forward(self, x, *args: Any, **kwargs: Any) -> Any:
-        return self.net(x)
+    def forward(self, *args: Any, **kwds: Any) -> Any:
+        if len(args) == 1:
+            return self.net(args[0])
+        else:
+            return self.net(torch.cat(args, dim=1))
 
 
-class MLP_concat(MLP):
-    def __init__(
-        self,
-        layers: List[int] = [1, 20, 20, 20, 20, 20, 20, 20, 20, 1],
-        activation: str = "tanh",
-        linear_output: bool = False,
-        init_type: str = "xavier_truncated",
-    ) -> None:
-        super().__init__(layers, activation, linear_output, init_type)
-
-    def forward(self, x, t, *args: Any, **kwargs: Any) -> Any:
-        return self.net(torch.cat([x, t], dim=1))
 
 
 class DeepONet(BaseNN):
