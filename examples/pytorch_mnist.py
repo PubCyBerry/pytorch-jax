@@ -1,9 +1,9 @@
 # argument parser
 import argparse
-import random
 
 # Misc.
 import numpy as np
+import random
 
 # PyTorch
 import torch
@@ -112,9 +112,7 @@ def main():
         metavar="N",
         help="number of epochs to train (default: 14)",
     )
-    parser.add_argument(
-        "--lr", type=float, default=1.0, metavar="LR", help="learning rate (default: 1.0)"
-    )
+    parser.add_argument("--lr", type=float, default=1.0, metavar="LR", help="learning rate (default: 1.0)")
     parser.add_argument(
         "--gamma",
         type=float,
@@ -122,18 +120,10 @@ def main():
         metavar="M",
         help="Learning rate step gamma (default: 0.7)",
     )
-    parser.add_argument(
-        "--no-cuda", action="store_true", default=False, help="disables CUDA training"
-    )
-    parser.add_argument(
-        "--no-mps", action="store_true", default=False, help="disables macOS GPU training"
-    )
-    parser.add_argument(
-        "--dry-run", action="store_true", default=False, help="quickly check a single pass"
-    )
-    parser.add_argument(
-        "--seed", type=int, default=1, metavar="S", help="random seed (default: 1)"
-    )
+    parser.add_argument("--no-cuda", action="store_true", default=False, help="disables CUDA training")
+    parser.add_argument("--no-mps", action="store_true", default=False, help="disables macOS GPU training")
+    parser.add_argument("--dry-run", action="store_true", default=False, help="quickly check a single pass")
+    parser.add_argument("--seed", type=int, default=1, metavar="S", help="random seed (default: 1)")
     parser.add_argument(
         "--num-workers",
         type=int,
@@ -148,9 +138,7 @@ def main():
         metavar="N",
         help="how many batches to wait before logging training status",
     )
-    parser.add_argument(
-        "--save-model", action="store_true", default=False, help="For Saving the current Model"
-    )
+    parser.add_argument("--save-model", action="store_true", default=False, help="For Saving the current Model")
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     use_mps = not args.no_mps and torch.backends.mps.is_available()
@@ -179,9 +167,7 @@ def main():
         test_kwargs.update(cuda_kwargs)
 
     # See https://discuss.pytorch.org/t/normalization-in-the-mnist-example/457/20
-    transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
-    )
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
     dataset1 = datasets.MNIST("../data", train=True, download=True, transform=transform)
     dataset2 = datasets.MNIST("../data", train=False, transform=transform)
     train_loader = DataLoader(dataset1, **train_kwargs)
